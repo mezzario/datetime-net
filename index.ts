@@ -1,2 +1,4 @@
-export { default as default } from "./src/datetime";
+import DateTime from "./src/datetime";
+
+export default DateTime;
 export * from "./src/datetime";
