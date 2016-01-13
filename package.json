@@ -1,0 +1,39 @@
+{
+  "name": "datetime-net",
+  "version": "1.0.0",
+  "description": "A JavaScript DateTime class inspired by .NET",
+  "main": "src/datetime.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mezzario/datetime-net.git"
+  },
+  "keywords": [
+    "date",
+    "time",
+    "datetime",
+    "javascript",
+    "js",
+    "library",
+    "manipulate",
+    "parse",
+    "chain",
+    "humanize",
+    "local",
+    "universal",
+    "utc",
+    "format",
+    "compare"
+  ],
+  "author": "Eugene Baranchuk <vencedor@gmail.com> (https://github.com/mezzario)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mezzario/datetime-net/issues"
+  },
+  "homepage": "https://github.com/mezzario/datetime-net#readme",
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}
