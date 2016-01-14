@@ -1,4 +1,6 @@
-import Utils from "./utils";
+/// <reference path="../typings/tsd.d.ts" />
+
+import * as Utils from "./utils";
 import Locale from "./locale/en";
 
 export enum DateTimeKind {

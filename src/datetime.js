@@ -1,5 +1,6 @@
+/// <reference path="../typings/tsd.d.ts" />
 "use strict";
-var utils_1 = require("./utils");
+var Utils = require("./utils");
 var en_1 = require("./locale/en");
 (function (DateTimeKind) {
     DateTimeKind[DateTimeKind["Unspecified"] = 0] = "Unspecified";
@@ -188,7 +189,7 @@ var DateTime = (function () {
     DateTime.prototype.humanize = function (options, localeConfig, humanizeFormats) {
         if (localeConfig === void 0) { localeConfig = en_1.default.config; }
         if (humanizeFormats === void 0) { humanizeFormats = en_1.default.humanizeFormats.short; }
-        options = utils_1.default.objectAssign({
+        options = Utils.objectAssign({
             useDate: true,
             useTime: true,
             alwaysWithTime: true,
@@ -286,7 +287,7 @@ var DateTime = (function () {
     };
     DateTime.prototype.toDisplayString = function (options, localeConfig) {
         if (localeConfig === void 0) { localeConfig = en_1.default.config; }
-        options = utils_1.default.objectAssign({}, options);
+        options = Utils.objectAssign({}, options);
         options.dateTimeNow = DateTime.now().setYears(localeConfig.twoDigitYearMax - 100 - 1);
         return this.humanize(options, localeConfig);
     };
@@ -294,7 +295,7 @@ var DateTime = (function () {
     DateTime.prototype.format = function (mask, localeConfig) {
         if (localeConfig === void 0) { localeConfig = en_1.default.config; }
         var token = /d{1,4}|M{1,4}|y{1,4}|([Hhms])\1?|tt|[Ll]|"[^"]*"|'[^']*'/g;
-        var pad = utils_1.default.pad;
+        var pad = Utils.pad;
         var d = this.getDays(), D = this.getDayOfWeek(), M = this.getMonths(), y = this.getYears(), H = this.getHours(), m = this.getMinutes(), s = this.getSeconds(), L = this.getMilliseconds(), flags = {
             d: d,
             dd: pad(d),
@@ -353,12 +354,12 @@ var DateTime = (function () {
     };
     DateTime.is24HoursPattern = function (pattern) {
         var hourFormat = new RegExp("h+", "i").exec(pattern);
-        return !hourFormat || utils_1.default.isUpperCase(hourFormat[0]);
+        return !hourFormat || Utils.isUpperCase(hourFormat[0]);
     };
     DateTime.parseDate = function (s, localeConfig) {
         if (localeConfig === void 0) { localeConfig = en_1.default.config; }
         var re = /^(\d{1,4})(([\.\-\/ ] ?(\d{1,2})([\.\-\/ ] ?(\d{1,4}))?(?:$| +.*$))|$)/i;
-        var matches = re.exec(utils_1.default.trim(s));
+        var matches = re.exec(Utils.trim(s));
         if (matches) {
             var parts = [matches[1]];
             if (matches[4] != null)
@@ -393,7 +394,7 @@ var DateTime = (function () {
     };
     DateTime.parseTime = function (s) {
         var re = /^(0?\d|1\d|2[0-3]|am?|pm?)(([\.\: ](0?\d|[1-5]\d|am?|pm?)([\.\: ](0?\d|[1-5]\d|am?|pm?))?(?:$| +.*$))|$)/i;
-        var matches = re.exec(utils_1.default.trim(s));
+        var matches = re.exec(Utils.trim(s));
         if (matches) {
             var parts = [matches[1]];
             if (matches[4] != null)
@@ -431,7 +432,7 @@ var DateTime = (function () {
     };
     DateTime.parseDateTime = function (s, localeConfig) {
         if (localeConfig === void 0) { localeConfig = en_1.default.config; }
-        var parts = utils_1.default.trim(s).split(/\s+/);
+        var parts = Utils.trim(s).split(/\s+/);
         var timeStartIndex = -1;
         var periodIndex = -1;
         for (var i = parts.length - 1; i >= 0; i--) {
@@ -519,7 +520,7 @@ var DateTime = (function () {
             : (valueFrom
                 ? fromFormat.replace("{0}", valueFromFormatted)
                 : toFormat.replace("{0}", valueToFormatted));
-        text = utils_1.default.trim(text.replace("{1}", "").replace("{2}", ""));
+        text = Utils.trim(text.replace("{1}", "").replace("{2}", ""));
         return text;
     };
     DateTime.floorTicks = function (dateTime, floorTo) {

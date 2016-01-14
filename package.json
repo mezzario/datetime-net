@@ -1,6 +1,6 @@
 {
   "name": "datetime-net",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A JavaScript DateTime class inspired by .NET",
   "main": "index.js",
   "scripts": {
