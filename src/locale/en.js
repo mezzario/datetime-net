@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = {
+export default {
     config: {
         dateCompsOrder: "mdy",
         minSupportedDate: "0000-01-01T00:00:00.000Z",
@@ -29,6 +27,7 @@ exports.default = {
         shortTimePattern: "h:mm tt",
         twoDigitYearMax: 2029
     },
+
     humanizeFormats: {
         full: {
             dateDaysAgo: "{0} days|ago",
@@ -56,6 +55,7 @@ exports.default = {
             timeSecondsAgo: "{0} seconds|ago",
             utcLabel: "utc"
         },
+
         short: {
             dateDaysAgo: "{0}d|ago",
             dateInDays: "in|{0}d",
@@ -82,6 +82,7 @@ exports.default = {
             utcLabel: "utc"
         }
     },
+
     rangeFormats: {
         dateTimeFromFormat: "from {0} {1}",
         dateTimeToFormat: "to {0} {1}",
@@ -90,5 +91,4 @@ exports.default = {
         timeToFormat: "to {0} {1}",
         timeRangeFormat: "from {0} to {1} {2}"
     }
-};
-//# sourceMappingURL=en.js.map
+}
