@@ -12,7 +12,7 @@ or
 ### Use
 
 ```js
-import { DateTime } from "datetime-net"
+import DateTime from "datetime-net"
 ```
 
 or
