@@ -49,50 +49,50 @@ export default class DateTime {
     this.value = new Date(ticksOrDate instanceof DateTime ? ticksOrDate.getTicks() : ticksOrDate)
   }
 
-  getYears()         { return this.value.getUTCFullYear() }
-  getMonths()        { return this.value.getUTCMonth() + 1 }
-  getTotalMonths()       { return Math.abs(this.getYears()) * 12 + this.getMonths() }
-  getDays()          { return this.value.getUTCDate() }
-  getDayOfWeek()       { return this.value.getUTCDay() }
-  getHours()         { return this.value.getUTCHours() }
-  getMinutes()         { return this.value.getUTCMinutes() }
-  getSeconds()         { return this.value.getUTCSeconds() }
-  getMilliseconds()      { return this.value.getUTCMilliseconds() }
-  getTicks()         { return this.value.getTime() }
-  getKind()          { return this.kind }
+  getYears()                 { return this.value.getUTCFullYear() }
+  getMonths()                { return this.value.getUTCMonth() + 1 }
+  getTotalMonths()           { return Math.abs(this.getYears()) * 12 + this.getMonths() }
+  getDays()                  { return this.value.getUTCDate() }
+  getDayOfWeek()             { return this.value.getUTCDay() }
+  getHours()                 { return this.value.getUTCHours() }
+  getMinutes()               { return this.value.getUTCMinutes() }
+  getSeconds()               { return this.value.getUTCSeconds() }
+  getMilliseconds()          { return this.value.getUTCMilliseconds() }
+  getTicks()                 { return this.value.getTime() }
+  getKind()                  { return this.kind }
 
-  setYears(value)      { this.value.setUTCFullYear(value); return this }
-  setMonths(value)       { this.value.setUTCMonth(value - 1); return this }
-  setDays(value)       { this.value.setUTCDate(value); return this }
-  setHours(value)      { this.value.setUTCHours(value); return this }
-  setMinutes(value)      { this.value.setUTCMinutes(value); return this }
-  setSeconds(value)      { this.value.setUTCSeconds(value); return this }
-  setMilliseconds(value)   { this.value.setUTCMilliseconds(value); return this }
-  setTicks(value)      { this.value = new Date(value); return this }
-  setKind(value)       { this.kind = value; return this }
+  setYears(value)            { this.value.setUTCFullYear(value); return this }
+  setMonths(value)           { this.value.setUTCMonth(value - 1); return this }
+  setDays(value)             { this.value.setUTCDate(value); return this }
+  setHours(value)            { this.value.setUTCHours(value); return this }
+  setMinutes(value)          { this.value.setUTCMinutes(value); return this }
+  setSeconds(value)          { this.value.setUTCSeconds(value); return this }
+  setMilliseconds(value)     { this.value.setUTCMilliseconds(value); return this }
+  setTicks(value)            { this.value = new Date(value); return this }
+  setKind(value)             { this.kind = value; return this }
 
-  incYears(value = 1)    { return this.setYears(this.getYears() + value) }
-  incMonths(value = 1)     { return this.setMonths(this.getMonths() + value) }
-  incDays(value = 1)     { return this.setDays(this.getDays() + value) }
-  incHours(value = 1)    { return this.setHours(this.getHours() + value) }
-  incMinutes(value = 1)    { return this.setMinutes(this.getMinutes() + value) }
-  incSeconds(value = 1)    { return this.setSeconds(this.getSeconds() + value) }
+  incYears(value = 1)        { return this.setYears(this.getYears() + value) }
+  incMonths(value = 1)       { return this.setMonths(this.getMonths() + value) }
+  incDays(value = 1)         { return this.setDays(this.getDays() + value) }
+  incHours(value = 1)        { return this.setHours(this.getHours() + value) }
+  incMinutes(value = 1)      { return this.setMinutes(this.getMinutes() + value) }
+  incSeconds(value = 1)      { return this.setSeconds(this.getSeconds() + value) }
   incMilliseconds(value = 1) { return this.setMilliseconds(this.getMilliseconds() + value) }
-  incTicks(value = 1)    { return this.setTicks(this.getTicks() + value) }
+  incTicks(value = 1)        { return this.setTicks(this.getTicks() + value) }
 
-  addYears(value = 1)    { return new DateTime(this).incYears(value) }
-  addMonths(value = 1)     { return new DateTime(this).incMonths(value) }
-  addDays(value = 1)     { return new DateTime(this).incDays(value) }
-  addHours(value = 1)    { return new DateTime(this).incHours(value) }
-  addMinutes(value = 1)    { return new DateTime(this).incMinutes(value) }
-  addSeconds(value = 1)    { return new DateTime(this).incSeconds(value) }
+  addYears(value = 1)        { return new DateTime(this).incYears(value) }
+  addMonths(value = 1)       { return new DateTime(this).incMonths(value) }
+  addDays(value = 1)         { return new DateTime(this).incDays(value) }
+  addHours(value = 1)        { return new DateTime(this).incHours(value) }
+  addMinutes(value = 1)      { return new DateTime(this).incMinutes(value) }
+  addSeconds(value = 1)      { return new DateTime(this).incSeconds(value) }
   addMilliseconds(value = 1) { return new DateTime(this).incMilliseconds(value) }
-  addTicks(value = 1)    { return new DateTime(this).incTicks(value) }
+  addTicks(value = 1)        { return new DateTime(this).incTicks(value) }
 
-  floor(to)          { return this.setTicks(DateTime._floorTicks(this, to)) }
+  floor(to)                  { return this.setTicks(DateTime._floorTicks(this, to)) }
 
-  toLocalTime()        { return this._convertTime(true) }
-  toUniversalTime()      { return this._convertTime(false) }
+  toLocalTime()              { return this._convertTime(true) }
+  toUniversalTime()          { return this._convertTime(false) }
 
   getDate() {
     return new DateTime(this).floor("day").setKind(DateTimeKind.Unspecified)
