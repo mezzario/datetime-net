@@ -1,5 +1,5 @@
 import expect from "expect"
-import DateTime, {DateTimeKind} from "../src"
+import DateTime, {DateTimeKind} from "../src/datetime"
 import {describe, it} from "mocha"
 
 describe("DateTime", () => {

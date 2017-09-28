@@ -1,4 +1,3 @@
-import * as Utils from "./utils"
 import Locale from "./locale/en"
 
 export const DateTimeKind = {
@@ -375,7 +374,11 @@ export default class DateTime {
 
   static is24HoursPattern(pattern) {
     const hourFormat = new RegExp("h+", "i").exec(pattern)
-    return !hourFormat || Utils.isUpperCase(hourFormat[0])
+    const ch = hourFormat ? hourFormat[0] : null
+
+    return !hourFormat
+      || (ch.toLocaleLowerCase() !== ch.toLocaleUpperCase()
+        && ch.toLocaleUpperCase() === ch)
   }
 
   static parseDate(s, localeConfig = Locale.config) {

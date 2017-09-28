@@ -5,7 +5,7 @@ const {NODE_ENV} = process.env
 
 export default {
   entry: [
-    "./src",
+    "./src/datetime.js",
   ],
 
   output: {
