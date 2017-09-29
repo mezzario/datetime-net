@@ -40,7 +40,6 @@ export default {
       dateWeekAgo: "a week|ago",
       dateYesterday: "yesterday",
       dimeInSeconds: "in {0}|seconds",
-      localLabel: "local",
       timeHourAgo: "an hour|ago",
       timeHoursAgo: "{0} hours|ago",
       timeInHour: "in an|hour",
@@ -53,7 +52,6 @@ export default {
       timeMinutesAgo: "{0} minutes|ago",
       timeSecondAgo: "a second|ago",
       timeSecondsAgo: "{0} seconds|ago",
-      utcLabel: "utc",
     },
 
     short: {
@@ -66,7 +64,6 @@ export default {
       dateTomorrow: "tomorrow",
       dateWeekAgo: "a week|ago",
       dateYesterday: "yesterday",
-      localLabel: "local",
       timeHourAgo: "1h|ago",
       timeHoursAgo: "{0}h|ago",
       timeInHour: "in|1h",
@@ -79,7 +76,6 @@ export default {
       timeMinutesAgo: "{0}m|ago",
       timeSecondAgo: "1s|ago",
       timeSecondsAgo: "{0}s|ago",
-      utcLabel: "utc",
     },
   },
 

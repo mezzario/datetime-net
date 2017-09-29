@@ -8,7 +8,7 @@ describe("DateTime", () => {
     const dateTime = new DateTime(date)
 
     expect(dateTime.getTicks()).toBe(date.getTime())
-    expect(dateTime.getKind()).toBe(DateTimeKind.Unspecified)
+    expect(dateTime.getKind()).toBe(DateTimeKind.unspecified)
   })
 
   it("can be created from MS string", () => {
@@ -17,7 +17,7 @@ describe("DateTime", () => {
     const dateTime = new DateTime(s)
 
     expect(dateTime.getTicks()).toBe(ticks)
-    expect(dateTime.getKind()).toBe(DateTimeKind.Utc)
+    expect(dateTime.getKind()).toBe(DateTimeKind.utc)
   })
 
   it("can be created from ISO string", () => {
@@ -26,7 +26,7 @@ describe("DateTime", () => {
     const dateTime = new DateTime(s)
 
     expect(dateTime.getTicks()).toBe(date.getTime())
-    expect(dateTime.getKind()).toBe(DateTimeKind.Utc)
+    expect(dateTime.getKind()).toBe(DateTimeKind.utc)
     expect(dateTime.getYears()).toBe(1799)
     expect(dateTime.getHours()).toBe(22)
   })

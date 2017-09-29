@@ -1,48 +1,48 @@
 import Locale from "./locale/en"
 
 export const DateTimeKind = {
-  Unspecified: 0,
-  Utc: 1,
-  Local: 2,
+  unspecified: 0,
+  utc: 1,
+  local: 2,
 }
 
 export const DateTimeMode = {
-  DateTime: 0,
-  Date: 1,
-  Time: 2,
+  dateTime: 0,
+  date: 1,
+  time: 2,
 }
 
 export default class DateTime {
-  static MsDateRe = /\/Date\((-?\d+)\)\//
-  static IsoDateRe = /^(\d{4})(?:-?W(\d+)(?:-?(\d+)D?)?|(?:-(\d+))?-(\d+))(?:[T ](\d+):(\d+)(?::(\d+)(?:\.(\d+))?)?)?(?:Z(-?\d*))?$/
+  static msDateRe = /\/Date\((-?\d+)\)\//
+  static isoDateRe = /^(\d{4})(?:-?W(\d+)(?:-?(\d+)D?)?|(?:-(\d+))?-(\d+))(?:[T ](\d+):(\d+)(?::(\d+)(?:\.(\d+))?)?)?(?:Z(-?\d*))?$/
 
   constructor (yearOrTicksOrDate, month, day, hour, minute, sec, msec) {
     let ticksOrDate
-    this.kind = DateTimeKind.Unspecified
+    this.kind = DateTimeKind.unspecified
 
     if (typeof yearOrTicksOrDate === "undefined") {
       ticksOrDate = new Date().getTime() + DateTime.getTimezoneOffsetTicks()
-      this.kind = DateTimeKind.Local
+      this.kind = DateTimeKind.local
     }
     else if (typeof month === "undefined") {
       ticksOrDate = yearOrTicksOrDate
 
       if (typeof ticksOrDate === "string") {
-        const ticks = DateTime.MsDateRe.exec(ticksOrDate)
+        const ticks = DateTime.msDateRe.exec(ticksOrDate)
 
         if (ticks !== null) {
           ticksOrDate = +ticks[1]
-          this.kind = DateTimeKind.Utc
+          this.kind = DateTimeKind.utc
         }
-        else if (DateTime.IsoDateRe.test(ticksOrDate))
-          this.kind = DateTimeKind.Utc
+        else if (DateTime.isoDateRe.test(ticksOrDate))
+          this.kind = DateTimeKind.utc
       }
       else if (ticksOrDate instanceof DateTime)
         this.kind = yearOrTicksOrDate.kind
     }
     else {
       ticksOrDate = Date.UTC(yearOrTicksOrDate, month - 1, day || 1, hour || 0, minute || 0, sec || 0, msec || 0)
-      this.kind = DateTimeKind.Local
+      this.kind = DateTimeKind.local
     }
 
     this.value = new Date(ticksOrDate instanceof DateTime ? ticksOrDate.getTicks() : ticksOrDate)
@@ -94,7 +94,7 @@ export default class DateTime {
   toUniversalTime()          { return this._convertTime(false) }
 
   getDate() {
-    return new DateTime(this).floor("day").setKind(DateTimeKind.Unspecified)
+    return new DateTime(this).floor("day").setKind(DateTimeKind.unspecified)
   }
 
   setDate(value, month, day) {
@@ -116,7 +116,7 @@ export default class DateTime {
 
   getTime() {
     return new DateTime(1970, 1, 1, this.getHours(), this.getMinutes(), this.getSeconds(), this.getMilliseconds())
-      .setKind(DateTimeKind.Unspecified)
+      .setKind(DateTimeKind.unspecified)
   }
 
   setTime(value, min, sec, msec) {
@@ -144,8 +144,8 @@ export default class DateTime {
 
   toString() {
     return this.format("yyyy-MM-dd HH:mm:ss.l")
-      + (this.getKind() === DateTimeKind.Local ? " (local)" : "")
-      + (this.getKind() === DateTimeKind.Utc ? " (utc)" : "")
+      + (this.getKind() === DateTimeKind.local ? " (local)" : "")
+      + (this.getKind() === DateTimeKind.utc ? " (utc)" : "")
   }
 
   compareTo(value, floorTo) {
@@ -153,10 +153,10 @@ export default class DateTime {
     let dateTime2 = DateTime.cast(value)
 
     if (dateTime1.getKind() !== dateTime2.getKind()
-      && dateTime1.getKind() !== DateTimeKind.Unspecified
-      && dateTime2.getKind() !== DateTimeKind.Unspecified)
+      && dateTime1.getKind() !== DateTimeKind.unspecified
+      && dateTime2.getKind() !== DateTimeKind.unspecified)
     {
-      dateTime2 = dateTime1.getKind() === DateTimeKind.Utc
+      dateTime2 = dateTime1.getKind() === DateTimeKind.utc
         ? dateTime2.toUniversalTime()
         : dateTime2.toLocalTime()
     }
@@ -329,12 +329,12 @@ export default class DateTime {
   _convertTime(toLocal) {
     const result = new DateTime(this)
 
-    if ((toLocal && (result.getKind() !== DateTimeKind.Local))
-      || (!toLocal && (result.getKind() !== DateTimeKind.Utc)))
+    if ((toLocal && (result.getKind() !== DateTimeKind.local))
+      || (!toLocal && (result.getKind() !== DateTimeKind.utc)))
     {
       return result
         .incMilliseconds(DateTime.getTimezoneOffsetTicks() * (toLocal ? 1 : -1))
-        .setKind(toLocal ? DateTimeKind.Local : DateTimeKind.Utc)
+        .setKind(toLocal ? DateTimeKind.local : DateTimeKind.utc)
     }
 
     return result
@@ -521,7 +521,7 @@ export default class DateTime {
       date.setTime(time)
     }
 
-    return date.setKind(DateTimeKind.Unspecified)
+    return date.setKind(DateTimeKind.unspecified)
   }
 
   static getShortenedRangeText(
@@ -534,7 +534,7 @@ export default class DateTime {
     let valueFrom = from ? DateTime.cast(from) : null
     let valueTo = to ? DateTime.cast(to) : null
 
-    if (mode === DateTimeMode.DateTime) {
+    if (mode === DateTimeMode.dateTime) {
       if (valueFrom)
         valueFrom = valueFrom.toLocalTime()
 
@@ -544,9 +544,9 @@ export default class DateTime {
 
     const now = DateTime.now()
 
-    const fromFormat = (mode === DateTimeMode.Time ? rangeFormats.timeFromFormat : rangeFormats.dateTimeFromFormat)
-    const toFormat = (mode === DateTimeMode.Time ? rangeFormats.timeToFormat : rangeFormats.dateTimeToFormat)
-    const rangeFormat = (mode === DateTimeMode.Time ? rangeFormats.timeRangeFormat : rangeFormats.dateTimeRangeFormat)
+    const fromFormat = (mode === DateTimeMode.time ? rangeFormats.timeFromFormat : rangeFormats.dateTimeFromFormat)
+    const toFormat = (mode === DateTimeMode.time ? rangeFormats.timeToFormat : rangeFormats.dateTimeToFormat)
+    const rangeFormat = (mode === DateTimeMode.time ? rangeFormats.timeRangeFormat : rangeFormats.dateTimeRangeFormat)
 
     const formatDate = function(date) {
       const year = date.getYears()
@@ -565,28 +565,28 @@ export default class DateTime {
     const formatValue = (dateTime) => {
       let subMode = mode
 
-      if (mode === DateTimeMode.DateTime)
+      if (mode === DateTimeMode.dateTime)
         if (valueFrom
           && valueTo
           && dateTime === valueTo
           && valueFrom.compareTo(valueTo) !== 0
           && valueFrom.compareTo(valueTo, "day") === 0)
         {
-          subMode = DateTimeMode.Time
+          subMode = DateTimeMode.time
         }
         else if (dateTime.getTime().getTicks() === 0
           && (!valueFrom || !valueTo || valueTo.compareTo(valueFrom.addDays()) >= 0))
         {
-          subMode = DateTimeMode.Date
+          subMode = DateTimeMode.date
 
           if (dateTime === valueTo)
             dateTime = valueTo.addDays(-1)
         }
 
       switch (subMode) {
-        case DateTimeMode.DateTime: return formatDate(dateTime) + " " + formatTime(dateTime)
-        case DateTimeMode.Date: return formatDate(dateTime)
-        case DateTimeMode.Time: return formatTime(dateTime)
+        case DateTimeMode.dateTime: return formatDate(dateTime) + " " + formatTime(dateTime)
+        case DateTimeMode.date: return formatDate(dateTime)
+        case DateTimeMode.time: return formatTime(dateTime)
         default: throw "DateTime.getShortenedRangeText: invalid mode"
       }
     }

@@ -38,7 +38,6 @@ export interface DateTimeHumanizeFormats {
   dateTomorrow: string
   dateWeekAgo: string
   dateYesterday: string
-  localLabel: string
   timeHourAgo: string
   timeHoursAgo: string
   timeInHour: string
@@ -51,7 +50,6 @@ export interface DateTimeHumanizeFormats {
   timeMinutesAgo: string
   timeSecondAgo: string
   timeSecondsAgo: string
-  utcLabel: string
 }
 
 export interface DateTimeRangeFormats {
