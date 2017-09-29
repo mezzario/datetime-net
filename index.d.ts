@@ -1,13 +1,13 @@
 export enum DateTimeKind {
-  Unspecified,
-  Utc,
-  Local
+  unspecified,
+  utc,
+  local
 }
 
 export enum DateTimeMode {
-  DateTime,
-  Date,
-  Time
+  dateTime,
+  date,
+  time
 }
 
 export interface DateTimeLocaleConfig {
