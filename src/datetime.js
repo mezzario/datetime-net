@@ -167,7 +167,7 @@ export default class DateTime {
   humanize(
     options,
     locale = LocaleSettings,
-    humanizeFormats = LocaleSettings.humanizeFormats.short
+    humanizeFormats
   ) {
     options = Object.assign({
       useDate: true,
@@ -180,7 +180,7 @@ export default class DateTime {
     if (!options.useDate && !options.useTime)
       throw "DateTime.toSimpleText: one of the 'options.useDate' or 'options.useTime' must be true"
 
-    const fmts = humanizeFormats
+    const fmts = humanizeFormats == null ? locale.humanizeFormats.short : humanizeFormats
     const dateTimeNow = DateTime.cast(options.dateTimeNow)
     let dateStr = ""
     let timeStr = ""
