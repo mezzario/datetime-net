@@ -1,4 +1,4 @@
-import Locale from "./locale/en"
+import LocaleSettings from "./locale/en"
 
 export const DateTimeKind = {
   unspecified: 0,
@@ -166,8 +166,8 @@ export default class DateTime {
 
   humanize(
     options,
-    localeConfig = Locale.config,
-    humanizeFormats = Locale.humanizeFormats.short
+    locale = LocaleSettings,
+    humanizeFormats = LocaleSettings.humanizeFormats.short
   ) {
     options = Object.assign({
       useDate: true,
@@ -207,11 +207,11 @@ export default class DateTime {
       }
       else {
         if (this.getYears() === dateTimeNow.getYears())
-          dateStr = this.format(localeConfig.abbreviatedMonthDayPattern)
-        else if (this.getYears() > localeConfig.twoDigitYearMax - 100 && this.getYears() <= localeConfig.twoDigitYearMax)
-          dateStr = this.format(localeConfig.abbreviatedShortDatePattern)
+          dateStr = this.format(locale.abbreviatedMonthDayPattern)
+        else if (this.getYears() > locale.twoDigitYearMax - 100 && this.getYears() <= locale.twoDigitYearMax)
+          dateStr = this.format(locale.abbreviatedShortDatePattern)
         else
-          dateStr = this.format(localeConfig.abbreviatedDatePattern)
+          dateStr = this.format(locale.abbreviatedDatePattern)
       }
     }
 
@@ -260,7 +260,7 @@ export default class DateTime {
         }
       }
       else if (options.alwaysWithTime)
-        timeStr = this.format(localeConfig.shortTimePattern)
+        timeStr = this.format(locale.shortTimePattern)
     }
 
     return options.singleLine
@@ -276,14 +276,14 @@ export default class DateTime {
           : timeStr.split(options.separator)))
   }
 
-  toDisplayString(options, localeConfig = Locale.config) {
+  toDisplayString(options, localeConfig = LocaleSettings.config) {
     options = Object.assign({}, options)
     options.dateTimeNow = DateTime.now().setYears(localeConfig.twoDigitYearMax - 100 - 1)
     return this.humanize(options, localeConfig)
   }
 
   // http://blog.stevenlevithan.com/archives/date-time-format/comment-page-3
-  format(mask, localeConfig = Locale.config) {
+  format(mask, locale = LocaleSettings) {
     const token = /d{1,4}|M{1,4}|y{1,4}|([Hhms])\1?|tt|[Ll]|"[^"]*"|'[^']*'/g
     const pad = (val, len = 2) => String(val).padStart(len, "0")
 
@@ -298,12 +298,12 @@ export default class DateTime {
       flags = {
         d,
         dd:   pad(d),
-        ddd:  localeConfig.abbreviatedDayNames[D],
-        dddd: localeConfig.dayNames[D],
+        ddd:  locale.abbreviatedDayNames[D],
+        dddd: locale.dayNames[D],
         M,
         MM:   pad(M),
-        MMM:  localeConfig.abbreviatedMonthNames[M - 1],
-        MMMM: localeConfig.monthNames[M - 1],
+        MMM:  locale.abbreviatedMonthNames[M - 1],
+        MMMM: locale.monthNames[M - 1],
         y:  Number(String(y).slice(2)),
         yy:   String(y).slice(2),
         yyy:  pad(y, 3),
@@ -381,7 +381,7 @@ export default class DateTime {
         && ch.toLocaleUpperCase() === ch)
   }
 
-  static parseDate(s, localeConfig = Locale.config) {
+  static parseDate(s, locale = LocaleSettings) {
     const re = /^(\d{1,4})(([.\-/ ] ?(\d{1,2})([.\-/ ] ?(\d{1,4}))?(?:$| +.*$))|$)/i
     const matches = re.exec(s.trim())
 
@@ -395,7 +395,7 @@ export default class DateTime {
         parts[2] = matches[6]
 
       const curDate = DateTime.now()
-      const co = localeConfig.dateCompsOrder
+      const co = locale.dateCompsOrder
       let year = (parts.length === 3) ? +parts[co.indexOf("y")] : curDate.getYears()
       const month = (parts.length >= 2) ? +parts[(parts.length === 2 ? co.replace("y", "") : co).indexOf("m")] : curDate.getMonths()
       const day = (parts.length === 1) ? +parts[0] : +parts[(parts.length === 2 ? co.replace("y", "") : co).indexOf("d")]
@@ -405,8 +405,8 @@ export default class DateTime {
         && (day >= 1) && (day <= 31))
       {
         if (year < 100) {
-          const major = Math.round(localeConfig.twoDigitYearMax / 100) * 100
-          const minor = localeConfig.twoDigitYearMax - major
+          const major = Math.round(locale.twoDigitYearMax / 100) * 100
+          const minor = locale.twoDigitYearMax - major
 
           year = (year <= minor) ? (major + year) : (major + year - 100)
         }
@@ -417,8 +417,8 @@ export default class DateTime {
           && date.getYears() === year
           && date.getMonths() === month
           && date.getDays() === day
-          && date.getTicks() >= DateTime.cast(localeConfig.minSupportedDate).getTicks()
-          && date.getTicks() <= DateTime.cast(localeConfig.maxSupportedDate).getTicks())
+          && date.getTicks() >= DateTime.cast(locale.minSupportedDate).getTicks()
+          && date.getTicks() <= DateTime.cast(locale.maxSupportedDate).getTicks())
         {
           return date
         }
@@ -481,7 +481,7 @@ export default class DateTime {
     return null
   }
 
-  static parseDateTime(s, localeConfig = Locale.config) {
+  static parseDateTime(s, locale = LocaleSettings) {
     const parts = s.trim().split(/\s+/)
     let timeStartIndex = -1
     let periodIndex = -1
@@ -508,7 +508,7 @@ export default class DateTime {
       return null
 
     const date = dateParts.length
-      ? DateTime.parseDate(dateParts.join(" "), localeConfig)
+      ? DateTime.parseDate(dateParts.join(" "), locale)
       : DateTime.now().setTime(0)
 
     if (!date)
@@ -524,13 +524,7 @@ export default class DateTime {
     return date.setKind(DateTimeKind.unspecified)
   }
 
-  static getShortenedRangeText(
-    from,
-    to,
-    mode,
-    localeConfig = Locale.config,
-    rangeFormats = Locale.rangeFormats
-  ) {
+  static getShortenedRangeText(from, to, mode, locale = LocaleSettings) {
     let valueFrom = from ? DateTime.cast(from) : null
     let valueTo = to ? DateTime.cast(to) : null
 
@@ -544,23 +538,23 @@ export default class DateTime {
 
     const now = DateTime.now()
 
-    const fromFormat = (mode === DateTimeMode.time ? rangeFormats.timeFromFormat : rangeFormats.dateTimeFromFormat)
-    const toFormat = (mode === DateTimeMode.time ? rangeFormats.timeToFormat : rangeFormats.dateTimeToFormat)
-    const rangeFormat = (mode === DateTimeMode.time ? rangeFormats.timeRangeFormat : rangeFormats.dateTimeRangeFormat)
+    const fromFormat = (mode === DateTimeMode.time ? locale.rangeFormats.timeFromFormat : locale.rangeFormats.dateTimeFromFormat)
+    const toFormat = (mode === DateTimeMode.time ? locale.rangeFormats.timeToFormat : locale.rangeFormats.dateTimeToFormat)
+    const rangeFormat = (mode === DateTimeMode.time ? locale.rangeFormats.timeRangeFormat : locale.rangeFormats.dateTimeRangeFormat)
 
     const formatDate = function(date) {
       const year = date.getYears()
 
       if (now.getYears() === year)
-        return date.format(localeConfig.shortMonthDayPattern)
+        return date.format(locale.shortMonthDayPattern)
 
-      if (year > localeConfig.twoDigitYearMax - 100 && year <= localeConfig.twoDigitYearMax)
-        return date.format(localeConfig.shortestDatePattern)
+      if (year > locale.twoDigitYearMax - 100 && year <= locale.twoDigitYearMax)
+        return date.format(locale.shortestDatePattern)
 
-      return date.format(localeConfig.shortDatePattern)
+      return date.format(locale.shortDatePattern)
     }
 
-    const formatTime = (time) => time.format(localeConfig.shortTimePattern)
+    const formatTime = (time) => time.format(locale.shortTimePattern)
 
     const formatValue = (dateTime) => {
       let subMode = mode

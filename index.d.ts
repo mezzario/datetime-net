@@ -10,7 +10,7 @@ export enum DateTimeMode {
   time
 }
 
-export interface DateTimeLocaleConfig {
+export interface DateTimeLocaleSettings {
   abbreviatedDatePattern: string
   abbreviatedDayNames: string[]
   abbreviatedMonthDayPattern: string
@@ -26,6 +26,13 @@ export interface DateTimeLocaleConfig {
   shortMonthDayPattern: string
   shortTimePattern: string
   twoDigitYearMax: number
+
+  humanizeFormats: {
+    full: DateTimeHumanizeFormats
+    short: DateTimeHumanizeFormats
+  }
+
+  rangeFormats: DateTimeRangeFormats
 }
 
 export interface DateTimeHumanizeFormats {
@@ -71,8 +78,8 @@ export interface DateTimeHumanizeOptions {
 }
 
 export default class DateTime {
-  static MsDateRe: RegExp
-  static IsoDateRe: RegExp
+  static msDateRe: RegExp
+  static isoDateRe: RegExp
 
   kind: DateTimeKind
   value: Date
@@ -132,9 +139,9 @@ export default class DateTime {
   valueOf(): number
   toString(): string
   compareTo(value: Date | DateTime | string | number, floorTo?: string): number
-  humanize(options?: DateTimeHumanizeOptions, localeConfig?, humanizeFormats?)
-  toDisplayString(options?: DateTimeHumanizeOptions, localeConfig?)
-  format(mask: string, localeConfig?): string
+  humanize(options?: DateTimeHumanizeOptions, locale?: DateTimeLocaleSettings, humanizeFormats?: DateTimeHumanizeFormats)
+  toDisplayString(options?: DateTimeHumanizeOptions, locale?: DateTimeLocaleSettings)
+  format(mask: string, locale?: DateTimeLocaleSettings): string
 
   static getTimezoneOffsetTicks(): number
   static cast(value: Date | DateTime | string | number): DateTime
@@ -142,8 +149,8 @@ export default class DateTime {
   static now(): DateTime
   static getTimezoneOffset(): number
   static is24HoursPattern(pattern: string): boolean
-  static parseDate(s: string, localeConfig?): DateTime
+  static parseDate(s: string, locale?: DateTimeLocaleSettings): DateTime
   static parseTime(s: string): DateTime
-  static parseDateTime(s: string, localeConfig?): DateTime
-  static getShortenedRangeText(from: Date | DateTime | string | number, to: Date | DateTime | string | number, mode: DateTimeMode, localeConfig?, rangeFormats?)
+  static parseDateTime(s: string, locale?: DateTimeLocaleSettings): DateTime
+  static getShortenedRangeText(from: Date | DateTime | string | number, to: Date | DateTime | string | number, mode: DateTimeMode, locale?, rangeFormats?)
 }
